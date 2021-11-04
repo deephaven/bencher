@@ -9,7 +9,6 @@
                   "title" : "preamble",
                   "text" : [
                       "import time",
-                      "from deephaven.conversion_utils import NULL_INT",
                       "import deephaven.ParquetTools as pt",
                       "tag = '100m'",
                       "bench_name = 'select-where-bench-' + tag",
@@ -27,8 +26,8 @@
                   "title" : "perform where over earlier computed select",
                   "text" : [
                       "time_start_ns = time.perf_counter_ns()",
-                      "result = relation.where('adjective_id != NULL_INT && adjective_id == animal_id')"
-                      "time_end_ns = time.perf_counter_ns()",
+                      "result = relation.where('!isNull(adjective_id) && adjective_id == animal_id')",
+                      "time_end_ns = time.perf_counter_ns()"
                   ],
                   "timed" : 1
               },
