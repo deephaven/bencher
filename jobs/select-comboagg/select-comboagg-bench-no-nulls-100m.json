@@ -10,7 +10,7 @@
                   "text" : [
                       "import time",
                       "import deephaven.ParquetTools as pt",
-                      "from deephaven import ComboAggregateFactory as caf",
+                      "from deephaven import Aggregation as agg, as_list",
                       "tag = 'no-nulls-100m'",
                       "bench_name = 'select-comboagg-bench-' + tag",
                   ],
@@ -33,7 +33,7 @@
                   "title" : "perform ComboAgg",
                   "text" : [
                       "time_start_ns = time.perf_counter_ns()",
-                      "result = relation.by(caf.AggCombo(caf.AggSum('SumAdj=adjective_id'),caf.AggMin('MinAdj=adjective_id'), caf.AggMax('MaxAdj=adjective_id'), caf.AggAvg('AvgAdj=adjective_id'), caf.AggStd('StdAdj=adjective_id'), caf.AggFirst('FirstAdj=adjective_id'), caf.AggLast('LastAdj=adjective_id'), caf.AggCount('CountAdj')), 'animal_id')",
+                      "result = relation.aggBy(as_list([agg.AggSum('SumAdj=adjective_id'),agg.AggMin('MinAdj=adjective_id'), agg.AggMax('MaxAdj=adjective_id'), agg.AggAvg('AvgAdj=adjective_id'), agg.AggStd('StdAdj=adjective_id'), agg.AggFirst('FirstAdj=adjective_id'), agg.AggLast('LastAdj=adjective_id'), agg.AggCount('CountAdj')]), 'animal_id')",
                       "time_end_ns = time.perf_counter_ns()",
                   ],
                   "timed" : 1

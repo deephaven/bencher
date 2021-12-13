@@ -29,7 +29,7 @@ A typical benchmark job will run a generation step to create sample data, then r
    cd $BENCHER
    ./gradlew run --args="-n 5 $DHC/data select-sort/select-sort-bench-1col-no-nulls-20m.json"
    ```
-   
+
 7. The command above will run the benchmark 5 times on the same docker instance, which will help
    smoothing out any startup/JVM warmup costs; the benchmarks given in the command line are run
    all on the same instance, without restarting DHC.  The code attempts its best to do session cleanup
@@ -167,7 +167,7 @@ It's possible to generate data that's completely random, though repeatable. Let'
 	  }
 	}
 
-The `format` string indicate we'll create a CSV file, this time named "join-10m.csv". 
+The `format` string indicate we'll create a CSV file, this time named "join-10m.csv".
 
 The `values` column has a `gernation_type` of `full_range`, which means the column generates a complete, gapless range of integers. Here, the `range_start` is `1` and the `range_stop` value is `10000000`, so this column will be a driver column that produces ten million rows.
 
@@ -177,7 +177,7 @@ To promote repeatability, each column has a `seed` value. The seed will be used 
 
 The `order` for the `values` column is increasing, so we know we'll get the rows numbered 1 though 10,000,000 in the output, in order.
 
-As the `values` column drives the generation, the `adjective_id` and `animal_id` column definitions are used to generate values for two more columns. Because the `generation_type` in these columns is `random`, each one will produce a random number in a given range: between 1 and 650 inclusive for `adjective_id`, and between 1 and 250 inclusive for `animal_id`. 
+As the `values` column drives the generation, the `adjective_id` and `animal_id` column definitions are used to generate values for two more columns. Because the `generation_type` in these columns is `random`, each one will produce a random number in a given range: between 1 and 650 inclusive for `adjective_id`, and between 1 and 250 inclusive for `animal_id`.
 
 The `adjective_id` and `animal_id` also have a `percent_null` value of 5, so there's a 5% chance any value in each of the columns is null.
 
@@ -263,34 +263,34 @@ An example benchmark steps file is given here:
 	  "statements" : [
 	    {
 	      "title" : "imports",
-	      "text" : "from deephaven.TableTools import readCsv",
+	      "text" : "from deephaven import read_csv",
 	      "timed" : 0
 	    },
-	
+
 	    {
 	      "title" : "load animals",
-	      "text" : "animals = readCsv('/data/animals.csv')",
+	      "text" : "animals = read_csv('/data/animals.csv')",
 	      "timed" : 1
 	    },
-	
+
 	    {
 	      "title" : "load adjectives",
-	      "text" : "adjectives = readCsv('/data/adjectives.csv')",
+	      "text" : "adjectives = read_csv('/data/adjectives.csv')",
 	      "timed" : 1
 	    },
-	
+
 	    {
 	      "title" : "load relation table",
-	      "text" : "relation = readCsv('/data/join.csv')",
+	      "text" : "relation = read_csv('/data/join.csv')",
 	      "timed" : 1
 	    },
-	
+
 	    {
 	      "title" : "perform join",
 	      "text" : "result = relation.join(adjectives, 'adjective_id').join(animals, 'animal_id').view('Values', 'adjective_name', 'animal_name')",
 	      "timed" : 1
 	    }
-	
+
 	  ]
 	}
 
@@ -306,9 +306,9 @@ Appropriate escaping must be done for the JSON format. The above script executes
 
 then executes four more statements, each of which is timed:
 
-	animals = readCsv("/data/animals.csv")
-	adjectives = readCsv("/data/adjectives.csv")
-	relation = readCsv("/data/join.csv")
+	animals = read_csv("/data/animals.csv")
+	adjectives = read_csv("/data/adjectives.csv")
+	relation = read_csv("/data/join.csv")
 	result = relation.join(adjectives, "adjective_id").join(animals, "animal_id").view("Values", "adjective_name", "animal_name")
 
 The script imports three different CSV files, showing the timing for each along the way. Finally, it joins the three tables together to produce a fourth, again showing the timing of the operation.
@@ -362,5 +362,3 @@ Several enhancements are foreseeable:
 - Support groovy
 - Check results for correctness
 - Configure Parquet partitioning
-
-
