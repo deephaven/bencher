@@ -18,6 +18,7 @@ dependencies {
 
     // https://search.maven.org/search?q=g:io.deephaven
     implementation 'io.deephaven:deephaven-java-client-session:0.9.0'
+    runtimeOnly 'io.grpc:grpc-netty'
 
     implementation project(':datagen')
 
